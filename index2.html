@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>뷰티풀 민트 라이프 2025 - 티켓 예매</title>
+  <style>
+    :root {
+      --primary-color: #1e90ff;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+    header {
+      background: white;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ddd;
+      flex-wrap: wrap;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      margin-right: 12px;
+    }
+    .search-container {
+      position: relative;
+      max-width: 300px;
+      flex: 1;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 8px 32px 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-container .icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+    }
+    .header-right a {
+      margin-left: 12px;
+      font-size: 13px;
+      text-decoration: none;
+      color: #666;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+    }
+    .left-section, .right-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .left-section {
+      flex: 1 1 300px;
+    }
+    .right-section {
+      flex: 1 1 300px;
+    }
+    .poster {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .info h1 {
+      font-size: 24px;
+      margin: 16px 0 10px;
+    }
+    .info p {
+      margin: 4px 0;
+    }
+    .field {
+      margin-bottom: 20px;
+    }
+    .field label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    input[type="date"], select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <img src="https://ticketimage.interpark.com/TicketImage/2021/202109/logo_interpark_ticket.svg" alt="Interpark Logo" height="28" />
+      <nav>
+        <a href="#">뮤지컬</a>
+        <a href="#">콘서트</a>
+        <a href="#">전시/행사</a>
+        <a href="#">클래식</a>
+      </nav>
+    </div>
+    <div class="search-container">
+      <input type="text" placeholder="티켓명, 아티스트명으로 검색하세요" />
+      <span class="icon">🔍</span>
+    </div>
+    <div class="header-right">
+      <a href="#">로그인</a>
+      <a href="#">회원가입</a>
+      <a href="#">마이페이지</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="left-section">
+      <!-- 콘서트 포스터 -->
+      <img src="https://ticketimage.interpark.com/Play/image/large/23/23009160_p.gif" alt="뷰티풀 민트 라이프 포스터" class="poster" />
+      <div class="info">
+        <h1>뷰티풀 민트 라이프 2025</h1>
+        <p><strong>장소:</strong> 올림픽공원</p>
+        <p><strong>기간:</strong> 2025.06.13 ~ 2025.06.15</p>
+        <p><strong>가격:</strong> 121,000원 (1일권)</p>
+      </div>
+    </div>
+    <div class="right-section">
+      <div class="field">
+        <label for="date">관람일 선택</label>
+        <input type="date" id="date" min="2025-06-28" max="2025-06-29" />
+      </div>
+      <div class="field">
+        <label for="session">회차 선택</label>
+        <select id="session">
+          <option value="" disabled selected>회차 선택</option>
+          <option value="1">1회차 12:00</option>
+          <option value="2">2회차 18:00</option>
+        </select>
+      </div>
+      <button id="bookBtn" disabled>예매하기</button>
+    </div>
+  </div>
+
+  <script>
+    const dateInput = document.getElementById("date");
+    const sessionSelect = document.getElementById("session");
+    const bookBtn = document.getElementById("bookBtn");
+
+    function checkReady() {
+      if (dateInput.value && sessionSelect.value) {
+        bookBtn.disabled = false;
+      } else {
+        bookBtn.disabled = true;
+      }
+    }
+
+    dateInput.addEventListener("change", checkReady);
+    sessionSelect.addEventListener("change", checkReady);
+
+    bookBtn.addEventListener("click", () => {
+      alert("만우절 장난입니다! 🎉\n진짜 예매는 다음에 😄");
+    });
+  </script>
+</body>
+</html>
