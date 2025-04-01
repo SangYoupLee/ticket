@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>뷰티풀 민트 라이프 2025 - 티켓 예매</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
     :root {
       --primary-color: #1e90ff;
@@ -73,18 +74,19 @@
     .left-section, .right-section {
       background: white;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
     .left-section {
       flex: 1 1 300px;
     }
     .right-section {
-      flex: 1 1 300px;
+      flex: 1 1 320px;
+      overflow: visible;
     }
     .poster {
       width: 100%;
-      border-radius: 8px;
+      border-radius: 12px;
     }
     .info h1 {
       font-size: 24px;
@@ -94,29 +96,44 @@
       margin: 4px 0;
     }
     .field {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     .field label {
       display: block;
       font-weight: bold;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
-    input[type="date"], select {
+    input[type="text"], select {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       font-size: 14px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 8px;
+    }
+    .flatpickr-calendar.inline {
+      display: block;
+      margin: 10px auto;
+      width: 320px !important;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: none;
+      border: 1px solid #ccc;
+      overflow: visible !important;
+    }
+    .extra-info {
+      font-size: 13px;
+      color: #666;
+      padding-top: 4px;
     }
     button {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       font-size: 16px;
       font-weight: bold;
       background-color: var(--primary-color);
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
     }
     button:disabled {
@@ -134,7 +151,7 @@
 <body>
   <header>
     <div class="header-left">
-      <img src="https://ticketimage.interpark.com/TicketImage/2021/202109/logo_interpark_ticket.svg" alt="Interpark Logo" height="28" />
+      <img src="logo_01.png" alt="Interpark Logo" height="28" />
       <nav>
         <a href="#">뮤지컬</a>
         <a href="#">콘서트</a>
@@ -155,8 +172,7 @@
 
   <div class="container">
     <div class="left-section">
-      <!-- 콘서트 포스터 -->
-      <img src="https://ticketimage.interpark.com/Play/image/large/23/23009160_p.gif" alt="뷰티풀 민트 라이프 포스터" class="poster" />
+      <img src="./poster.png" alt="뷰티풀 민트 라이프 포스터" class="poster" />
       <div class="info">
         <h1>뷰티풀 민트 라이프 2025</h1>
         <p><strong>장소:</strong> 올림픽공원</p>
@@ -167,35 +183,44 @@
     <div class="right-section">
       <div class="field">
         <label for="date">관람일 선택</label>
-        <input type="date" id="date" min="2025-06-28" max="2025-06-29" />
+        <input type="text" id="date" placeholder="날짜를 선택하세요" readonly />
       </div>
       <div class="field">
         <label for="session">회차 선택</label>
         <select id="session">
           <option value="" disabled selected>회차 선택</option>
           <option value="1">1회차 12:00</option>
-          <option value="2">2회차 18:00</option>
         </select>
+        <div class="extra-info">잔여석 안내 서비스를 제공하지 않습니다.</div>
       </div>
       <button id="bookBtn" disabled>예매하기</button>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    const dateInput = document.getElementById("date");
+    flatpickr("#date", {
+      dateFormat: "Y-m-d",
+      minDate: "2025-06-28",
+      maxDate: "2025-06-29",
+      defaultDate: "2025-06-28",
+      inline: true
+    });
+
     const sessionSelect = document.getElementById("session");
     const bookBtn = document.getElementById("bookBtn");
 
-    function checkReady() {
-      if (dateInput.value && sessionSelect.value) {
-        bookBtn.disabled = false;
-      } else {
-        bookBtn.disabled = true;
-      }
-    }
+    sessionSelect.addEventListener("change", () => {
+      const dateSelected = document.querySelector(".flatpickr-day.selected") !== null;
+      bookBtn.disabled = !(dateSelected && sessionSelect.value);
+    });
 
-    dateInput.addEventListener("change", checkReady);
-    sessionSelect.addEventListener("change", checkReady);
+    document.addEventListener("click", () => {
+      const dateSelected = document.querySelector(".flatpickr-day.selected") !== null;
+      if (dateSelected && sessionSelect.value) {
+        bookBtn.disabled = false;
+      }
+    });
 
     bookBtn.addEventListener("click", () => {
       alert("만우절 장난입니다! 🎉\n진짜 예매는 다음에 😄");
