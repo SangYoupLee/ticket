@@ -199,28 +199,24 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    flatpickr("#date", {
+    const sessionSelect = document.getElementById("session");
+    const bookBtn = document.getElementById("bookBtn");
+
+    const datePicker = flatpickr("#date", {
       dateFormat: "Y-m-d",
       minDate: "2025-06-28",
       maxDate: "2025-06-29",
       defaultDate: "2025-06-28",
-      inline: true
+      inline: true,
+      onChange: checkEnable
     });
 
-    const sessionSelect = document.getElementById("session");
-    const bookBtn = document.getElementById("bookBtn");
+    sessionSelect.addEventListener("change", checkEnable);
 
-    sessionSelect.addEventListener("change", () => {
-      const dateSelected = document.querySelector(".flatpickr-day.selected") !== null;
+    function checkEnable() {
+      const dateSelected = datePicker.selectedDates.length > 0;
       bookBtn.disabled = !(dateSelected && sessionSelect.value);
-    });
-
-    document.addEventListener("click", () => {
-      const dateSelected = document.querySelector(".flatpickr-day.selected") !== null;
-      if (dateSelected && sessionSelect.value) {
-        bookBtn.disabled = false;
-      }
-    });
+    }
 
     bookBtn.addEventListener("click", () => {
       alert("만우절 장난입니다! 🎉\n진짜 예매는 다음에 😄");
